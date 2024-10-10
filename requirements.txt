@@ -1,0 +1,17 @@
+transformers
+datasets
+accelerate
+deepspeed
+hydra-core
+jsonlines
+nltk
+numpy
+omegaconf
+peft
+PyYAML
+rouge_score
+scikit_learn
+scipy
+sentence_transformers
+tqdm
+bitsandbytes

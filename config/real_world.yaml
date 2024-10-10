@@ -1,0 +1,75 @@
+# model Config
+model_family: llama3-8b
+model_path: meta-llama/Meta-Llama-3-8B-Instruct
+
+use_LoRA: false
+LoRA:
+  r: 8
+  alpha: 32
+  dropout: 0.05
+
+# dataset config
+forget_data: real_world
+data_path: data/real_world
+split: forget
+retain: neighbor
+
+# unlearning config
+forget_loss: ME+GD
+lr: 5e-6
+num_epochs: 5
+batch_size: 4
+gradient_accumulation_steps: 4
+
+forget_coeff: 0.5 # 0.1 for ME+GD. 1.0 for baselines
+regularization_coeff: 1.0
+
+beta: 0.1
+weight_decay: 0.01
+
+fix_ref_model: false # only for continual unlearning
+mask: true # false for ME+GD, true for baselines
+
+seed: 1001
+
+# save config
+save_checkpoint: false
+overwrite_dir: false
+save_steps: last # steps_per_epoch
+save_root: results/real_world
+save_dir: ${save_root}/${model_family}/${split}/${forget_loss}/seed_${seed}/epoch${num_epochs}_${lr}_FixRef${fix_ref_model}_mask${mask}_${forget_coeff}_${regularization_coeff}
+
+# evak config
+ds_size: null
+eval_unlearn_step: last
+
+eval:
+  model_family: ${..model_family}
+  forget_loss: ${..forget_loss}
+  do_sample: false
+  
+  data_path: [ data/real_world, data/real_world ]
+
+  split: ${..split}_perturbed
+  split_list:
+    - neighbor_perturbed
+    - ${split}_perturbed
+  
+  eval_task: [ eval_log, eval_log_forget ]
+  question_key: [ question, question ]
+  answer_key: [ golden_answer, golden_answer ]
+  base_answer_key: [ paraphrased_answer, paraphrased_answer ]
+  perturbed_answer_key: [ perturbed_answer, perturbed_answer ]
+
+  generation:
+    max_length: 200
+    max_new_tokens: null
+
+  save_generated_text: true
+  
+  ds_size: ${..ds_size}
+
+  overwrite: true
+  use_pretrained: false
+
+  batch_size: 30
