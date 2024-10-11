@@ -1,6 +1,5 @@
 # A Closer Look at Machine Unlearning for Large Language Models
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-g.svg)](https://opensource.org/licenses/MIT)
 [![Arxiv](https://img.shields.io/badge/arXiv-2410.08109-B21A1B)](https://arxiv.org/abs/2410.08109)
 
 This repository is the official implementation for the paper: [A Closer Look at Machine Unlearning for Large Language Models](https://arxiv.org/abs/2410.08109)
